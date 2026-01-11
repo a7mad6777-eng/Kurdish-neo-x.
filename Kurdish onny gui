@@ -1,0 +1,171 @@
+-- Kurdish Obby V5 Ultra Deluxe GUI
+-- Place this in StarterPlayer > StarterPlayerScripts as LocalScript
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local player = Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+local Workspace = game:GetService("Workspace")
+
+-- ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "KurdishObbyV5UltraDeluxe"
+screenGui.Parent = PlayerGui
+screenGui.ResetOnSpawn = false
+
+-- Main Frame (sliding menu)
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0.38,0,0.5,0)
+mainFrame.Position = UDim2.new(1.2,0,0.5,0)
+mainFrame.AnchorPoint = Vector2.new(0.5,0.5)
+mainFrame.BackgroundColor3 = Color3.fromRGB(35,35,35)
+mainFrame.BorderSizePixel = 0
+mainFrame.Parent = screenGui
+mainFrame.ClipsDescendants = true
+
+-- Rounded + stroke
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0.08,0)
+corner.Parent = mainFrame
+
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 2
+stroke.Color = Color3.fromRGB(255,255,255)
+stroke.Transparency = 0.5
+stroke.Parent = mainFrame
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1,0,0.15,0)
+title.Position = UDim2.new(0,0,0,0)
+title.BackgroundTransparency = 1
+title.Text = "🌟 Kurdish Obby 🌟"
+title.TextScaled = true
+title.Font = Enum.Font.GothamBlack
+title.TextColor3 = Color3.fromRGB(255,255,255)
+title.Parent = mainFrame
+
+-- Function to create buttons
+local function createButton(name, position, color, icon)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0.85,0,0.15,0)
+    btn.Position = position
+    btn.BackgroundColor3 = color
+    btn.TextColor3 = Color3.fromRGB(255,255,255)
+    btn.TextScaled = true
+    btn.Font = Enum.Font.GothamBold
+    btn.Text = icon.." "..name
+    btn.Parent = mainFrame
+
+    local uicorner = Instance.new("UICorner")
+    uicorner.CornerRadius = UDim.new(0.05,0)
+    uicorner.Parent = btn
+
+    local uistroke = Instance.new("UIStroke")
+    uistroke.Thickness = 2
+    uistroke.Color = Color3.fromRGB(255,255,255)
+    uistroke.Transparency = 0.6
+    uistroke.Parent = btn
+
+    btn.MouseEnter:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundTransparency = 0.3}):Play()
+    end)
+    btn.MouseLeave:Connect(function()
+        TweenService:Create(btn, TweenInfo.new(0.2), {BackgroundTransparency = 0}):Play()
+    end)
+
+    return btn
+end
+
+-- Buttons
+local groupBtn = createButton("Killer Hub", UDim2.new(0.075,0,0.25,0), Color3.fromRGB(60,60,120), "🌐")
+groupBtn.MouseButton1Click:Connect(function()
+    print("Open group: https://www.roblox.com/communities/34006678/Killer-hub#!/about")
+end)
+
+local tpBtn = createButton("Teleport to First Spawn", UDim2.new(0.075,0,0.45,0), Color3.fromRGB(50,180,50), "📍")
+tpBtn.MouseButton1Click:Connect(function()
+    local spawn = workspace:FindFirstChild("SpawnLocation")
+    if spawn and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        -- Particle effect
+        local particle = Instance.new("ParticleEmitter")
+        particle.Texture = "http://www.roblox.com/asset/?id=241594314"
+        particle.Lifetime = NumberRange.new(0.5)
+        particle.Rate = 100
+        particle.Parent = player.Character.HumanoidRootPart
+        particle:Emit(50)
+        game.Debris:AddItem(particle,1)
+
+        -- Teleport
+        player.Character.HumanoidRootPart.CFrame = spawn.CFrame + Vector3.new(0,5,0)
+    end
+end)
+
+local shopBtn = createButton("Shop", UDim2.new(0.075,0,0.65,0), Color3.fromRGB(180,50,50), "🛒")
+shopBtn.MouseButton1Click:Connect(function()
+    print("Shop button clicked! Add shop GUI here.")
+end)
+
+-- Checkpoint tracker
+local checkpointLabel = Instance.new("TextLabel")
+checkpointLabel.Size = UDim2.new(0.85,0,0.1,0)
+checkpointLabel.Position = UDim2.new(0.075,0,0.85,0)
+checkpointLabel.BackgroundTransparency = 0.3
+checkpointLabel.BackgroundColor3 = Color3.fromRGB(50,50,50)
+checkpointLabel.TextColor3 = Color3.fromRGB(255,255,255)
+checkpointLabel.TextScaled = true
+checkpointLabel.Font = Enum.Font.Gotham
+checkpointLabel.Text = "Checkpoint: 0"
+checkpointLabel.Parent = mainFrame
+
+-- Update checkpoint based on parts in workspace named "CheckpointX"
+local function updateCheckpoint()
+    local maxCP = 0
+    for i,v in pairs(workspace:GetChildren()) do
+        if v:IsA("BasePart") and v.Name:match("^Checkpoint%d+$") then
+            local number = tonumber(v.Name:match("%d+"))
+            if number > maxCP then maxCP = number end
+        end
+    end
+    checkpointLabel.Text = "Checkpoint: "..maxCP
+end
+
+workspace.ChildAdded:Connect(updateCheckpoint)
+workspace.ChildRemoved:Connect(updateCheckpoint)
+updateCheckpoint()
+
+-- Leaderboard
+local leaderStats = Instance.new("Folder")
+leaderStats.Name = "leaderstats"
+leaderStats.Parent = player
+local stageStat = Instance.new("IntValue")
+stageStat.Name = "Stage"
+stageStat.Value = 0
+stageStat.Parent = leaderStats
+
+-- Toggle Button
+local toggleBtn = Instance.new("TextButton")
+toggleBtn.Size = UDim2.new(0.12,0,0.08,0)
+toggleBtn.Position = UDim2.new(0.95,0,0.92,0)
+toggleBtn.AnchorPoint = Vector2.new(1,1)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(255,215,0)
+toggleBtn.Text = "Menu ☰"
+toggleBtn.TextScaled = true
+toggleBtn.Font = Enum.Font.GothamBold
+toggleBtn.Parent = screenGui
+
+local toggleCorner = Instance.new("UICorner")
+toggleCorner.CornerRadius = UDim.new(0.3,0)
+toggleCorner.Parent = toggleBtn
+
+-- Slide animation
+local menuOpen = false
+toggleBtn.MouseButton1Click:Connect(function()
+    if not menuOpen then
+        TweenService:Create(mainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position=UDim2.new(0.7,0,0.5,0)}):Play()
+        menuOpen = true
+    else
+        TweenService:Create(mainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position=UDim2.new(1.2,0,0.5,0)}):Play()
+        menuOpen = false
+    end
+end)
