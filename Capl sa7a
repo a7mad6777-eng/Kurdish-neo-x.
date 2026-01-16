@@ -1,0 +1,130 @@
+-- SAFE NEON UI + IMAGE FADE + SOUND (LOCAL ONLY)
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.Name = "FinalFunUI"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- ================= MAIN BOX =================
+local bg = Instance.new("Frame")
+bg.Size = UDim2.fromScale(0.45, 0.18)
+bg.Position = UDim2.fromScale(0.275, 0.41)
+bg.BackgroundColor3 = Color3.new(0, 0, 0)
+bg.BackgroundTransparency = 1
+bg.BorderSizePixel = 0
+bg.Active = true
+bg.Parent = gui
+
+local corner = Instance.new("UICorner", bg)
+corner.CornerRadius = UDim.new(0, 22)
+
+local stroke = Instance.new("UIStroke", bg)
+stroke.Color = Color3.fromRGB(170, 0, 255)
+stroke.Thickness = 3
+stroke.Transparency = 1
+
+local text = Instance.new("TextLabel", bg)
+text.Size = UDim2.fromScale(1, 1)
+text.BackgroundTransparency = 1
+text.TextColor3 = Color3.fromRGB(210, 170, 255)
+text.TextScaled = true
+text.Font = Enum.Font.GothamBold
+text.TextTransparency = 1
+text.Text = ""
+
+-- ================= DRAG =================
+local dragging, dragStart, startPos
+bg.InputBegan:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = i.Position
+		startPos = bg.Position
+	end
+end)
+UIS.InputEnded:Connect(function(i)
+	if i.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+UIS.InputChanged:Connect(function(i)
+	if dragging and i.UserInputType == Enum.UserInputType.MouseMovement then
+		local d = i.Position - dragStart
+		bg.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + d.X,
+			startPos.Y.Scale, startPos.Y.Offset + d.Y)
+	end
+end)
+
+-- ================= TWEENS =================
+local function tween(o,p,t)
+	return TweenService:Create(o, TweenInfo.new(t), p)
+end
+
+local bgIn = tween(bg,{BackgroundTransparency=0.2},0.4)
+local bgOut = tween(bg,{BackgroundTransparency=1},0.4)
+local textIn = tween(text,{TextTransparency=0},0.4)
+local textOut = tween(text,{TextTransparency=1},0.4)
+local strokeIn = tween(stroke,{Transparency=0},0.4)
+local strokeOut = tween(stroke,{Transparency=1},0.4)
+
+-- ================= TYPEWRITER =================
+local function typeText(msg)
+	text.Text=""
+	for i=1,#msg do
+		text.Text = msg:sub(1,i)
+		task.wait(0.04)
+	end
+end
+
+local function showMessage(msg,time)
+	bgIn:Play(); textIn:Play(); strokeIn:Play()
+	typeText(msg)
+	task.wait(time)
+	textOut:Play(); strokeOut:Play(); bgOut:Play()
+	task.wait(0.5)
+end
+
+-- ================= IMAGE + SOUND =================
+local function showImageWithSound()
+	local img = Instance.new("ImageLabel")
+	img.Size = UDim2.fromScale(0.4,0.4)
+	img.Position = UDim2.fromScale(0.3,0.3)
+	img.BackgroundTransparency = 1
+	img.Image = "rbxassetid://8421746623"
+	img.ImageTransparency = 1
+	img.Parent = gui
+
+	local fadeIn = tween(img,{ImageTransparency=0},1)
+	local fadeOut = tween(img,{ImageTransparency=1},1)
+
+	local sound = Instance.new("Sound")
+	sound.SoundId = "rbxassetid://317455930"
+	sound.Volume = 1
+	sound.Parent = workspace
+
+	fadeIn:Play()
+	sound:Play()
+
+	task.wait(28)
+
+	fadeOut:Play()
+	sound:Stop()
+
+	task.wait(1)
+	img:Destroy()
+end
+
+-- ================= SEQUENCE =================
+showMessage("چۆنیی..",7)
+showMessage("یاخوا باشبی 😂❤️",7)
+showMessage("وەرە گوەکەم بخۆ 😂",7)
+showMessage("سۆعبەتەکەم",7)
+
+showImageWithSound()
+showMessage("ئەوە کەپڵەکەتە  هههه 😂",30)
+
+showMessage("خواحافیز 👋",7)
