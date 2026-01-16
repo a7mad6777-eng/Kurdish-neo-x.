@@ -2,14 +2,14 @@
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/Arceus-X-UI-Library/main/source.lua"))()
 
 -- Set the title
-lib:SetTitle("Arceus X | UI Library (Chillz#0348)") -- Note: you can use rich text as well.
+lib:SetTitle("Arceus X Kurd | UI Library (A7uliiix)") -- Note: you can use rich text as well.
 
 -- Set the icon
-lib:SetIcon("http://www.roblox.com/asset/?id=9178187770") -- Set the icon, with roblox asset id or anything that valid. You also able to use getcustomasset() to load custom image.
+lib:SetIcon("http://www.roblox.com/asset/?id=9411295123") -- Set the icon, with roblox asset id or anything that valid. You also able to use getcustomasset() to load custom image.
 
 -- Functions
 -- Makes a button, prints "Clicked!" while clicked.
-lib:AddButton("Button", function()
+lib:AddButton("Kurd test btn", function()
     print("Clicked!")
 end)
 
