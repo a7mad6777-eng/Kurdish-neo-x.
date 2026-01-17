@@ -1,0 +1,160 @@
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local player = Players.LocalPlayer
+
+-- ScreenGui
+local gui = Instance.new("ScreenGui")
+gui.Name = "ArceusNeonGui"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- Main Frame
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.fromScale(0.55, 0.45)
+frame.Position = UDim2.fromScale(0.225, 0.275)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 25)
+
+-- Toggle Button
+local toggleBtn = Instance.new("TextButton", gui)
+toggleBtn.Size = UDim2.fromScale(0.05, 0.05)
+toggleBtn.Position = UDim2.fromScale(0.9, 0.02)
+toggleBtn.Text = "☰"
+toggleBtn.Font = Enum.Font.GothamBold
+toggleBtn.TextScaled = true
+toggleBtn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+toggleBtn.TextColor3 = Color3.fromRGB(200, 0, 255)
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0,12)
+
+toggleBtn.MouseButton1Click:Connect(function()
+	frame.Visible = not frame.Visible
+end)
+
+-- Glow effect function
+local function addGlow(obj, color)
+	local glow = Instance.new("UIStroke")
+	glow.Parent = obj
+	glow.Thickness = 2
+	glow.Color = color
+	glow.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	glow.LineJoinMode = Enum.LineJoinMode.Round
+end
+
+-- Title
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.fromScale(1, 0.15)
+title.BackgroundTransparency = 1
+title.Text = "💎 Rewards Center"
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+title.TextColor3 = Color3.fromRGB(200, 0, 255)
+addGlow(title, Color3.fromRGB(255,0,255))
+
+-- Tabs Holder
+local tabs = Instance.new("Frame", frame)
+tabs.Position = UDim2.fromScale(0.05, 0.15)
+tabs.Size = UDim2.fromScale(0.9, 0.12)
+tabs.BackgroundTransparency = 1
+
+-- Robux Tab Button
+local robuxTab = Instance.new("TextButton", tabs)
+robuxTab.Size = UDim2.fromScale(0.48, 1)
+robuxTab.Text = "Robux"
+robuxTab.Font = Enum.Font.GothamBold
+robuxTab.TextScaled = true
+robuxTab.BackgroundColor3 = Color3.fromRGB(100,0,255)
+robuxTab.TextColor3 = Color3.fromRGB(255,255,255)
+Instance.new("UICorner", robuxTab).CornerRadius = UDim.new(0, 18)
+addGlow(robuxTab, Color3.fromRGB(200,0,255))
+
+-- Verified Tab Button
+local verifiedTab = Instance.new("TextButton", tabs)
+verifiedTab.Position = UDim2.fromScale(0.52,0)
+verifiedTab.Size = UDim2.fromScale(0.48,1)
+verifiedTab.Text = "Verified"
+verifiedTab.Font = Enum.Font.GothamBold
+verifiedTab.TextScaled = true
+verifiedTab.BackgroundColor3 = Color3.fromRGB(50,50,50)
+verifiedTab.TextColor3 = Color3.fromRGB(255,255,255)
+Instance.new("UICorner", verifiedTab).CornerRadius = UDim.new(0,18)
+addGlow(verifiedTab, Color3.fromRGB(200,0,255))
+
+-- Content Frames
+local robuxFrame = Instance.new("Frame", frame)
+robuxFrame.Position = UDim2.fromScale(0.05, 0.3)
+robuxFrame.Size = UDim2.fromScale(0.9, 0.6)
+robuxFrame.BackgroundTransparency = 1
+
+local verifiedFrame = Instance.new("Frame", frame)
+verifiedFrame.Position = robuxFrame.Position
+verifiedFrame.Size = robuxFrame.Size
+verifiedFrame.BackgroundTransparency = 1
+verifiedFrame.Visible = false
+
+-- Robux TextBox
+local box = Instance.new("TextBox", robuxFrame)
+box.Size = UDim2.fromScale(0.8, 0.25)
+box.Position = UDim2.fromScale(0.1,0.15)
+box.PlaceholderText = "Enter Robux amount"
+box.ClearTextOnFocus = false
+box.Font = Enum.Font.Gotham
+box.TextScaled = true
+box.BackgroundColor3 = Color3.fromRGB(40,40,40)
+box.TextColor3 = Color3.new(1,1,1)
+Instance.new("UICorner", box).CornerRadius = UDim.new(0,18)
+addGlow(box, Color3.fromRGB(200,0,255))
+
+-- Robux Button
+local robuxBtn = Instance.new("TextButton", robuxFrame)
+robuxBtn.Size = UDim2.fromScale(0.5,0.25)
+robuxBtn.Position = UDim2.fromScale(0.25,0.5)
+robuxBtn.Text = "Get Robux"
+robuxBtn.Font = Enum.Font.GothamBold
+robuxBtn.TextScaled = true
+robuxBtn.BackgroundColor3 = Color3.fromRGB(100,0,255)
+robuxBtn.TextColor3 = Color3.fromRGB(255,255,255)
+Instance.new("UICorner", robuxBtn).CornerRadius = UDim.new(0,20)
+addGlow(robuxBtn, Color3.fromRGB(200,0,255))
+
+robuxBtn.MouseButton1Click:Connect(function()
+	local amount = tonumber(box.Text)
+	if not amount then
+		StarterGui:SetCore("SendNotification", {Title="Error", Text="Enter a valid number!", Duration=3})
+		return
+	end
+	StarterGui:SetCore("SendNotification", {Title="Robux", Text="You got "..amount.." Robux!", Duration=4})
+end)
+
+-- Verified Button (BLACK & notification YOU GET IT LUCKY YOU)
+local verifiedBtn = Instance.new("TextButton", verifiedFrame)
+verifiedBtn.Size = UDim2.fromScale(0.6,0.3)
+verifiedBtn.Position = UDim2.fromScale(0.2,0.35)
+verifiedBtn.Text = "GET VERIFIED "
+verifiedBtn.Font = Enum.Font.GothamBold
+verifiedBtn.TextScaled = true
+verifiedBtn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+verifiedBtn.TextColor3 = Color3.fromRGB(255,255,255)
+Instance.new("UICorner", verifiedBtn).CornerRadius = UDim.new(0,22)
+addGlow(verifiedBtn, Color3.fromRGB(200,0,255))
+
+verifiedBtn.MouseButton1Click:Connect(function()
+	StarterGui:SetCore("SendNotification", {Title="Verified", Text="YOU GET IT LUCKY YOU", Duration=4})
+end)
+
+-- Tab Switching
+robuxTab.MouseButton1Click:Connect(function()
+	robuxFrame.Visible = true
+	verifiedFrame.Visible = false
+	robuxTab.BackgroundColor3 = Color3.fromRGB(100,0,255)
+	verifiedTab.BackgroundColor3 = Color3.fromRGB(50,50,50)
+end)
+
+verifiedTab.MouseButton1Click:Connect(function()
+	robuxFrame.Visible = false
+	verifiedFrame.Visible = true
+	verifiedTab.BackgroundColor3 = Color3.fromRGB(0,0,0)
+	robuxTab.BackgroundColor3 = Color3.fromRGB(50,50,50)
+end)
