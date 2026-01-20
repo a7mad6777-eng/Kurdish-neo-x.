@@ -1,0 +1,71 @@
+--==============================
+-- Kurdistan Full Script
+-- Credit: Ahmad
+--==============================
+
+--========== FILE CONFIG ==========
+local folderName = "KurdistanConfigs"
+
+local configFiles = {
+    "bijikurdistan.txt",
+    "bijiKurd.txt",
+    "KURDISTANwin.txt",
+    "FreedomKurdistan.txt"
+}
+
+local configText = "KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN KURDISTAN WOULD WIN " -- default text in config files
+
+-- Create folder
+if not isfolder(folderName) then
+    makefolder(folderName)
+end
+
+-- Create config files
+for _, file in ipairs(configFiles) do
+    local path = folderName .. "/" .. file
+    if not isfile(path) then
+        writefile(path, configText)
+    end
+end
+
+--========== SERVICES ==========
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+
+--========== GUI ==========
+local gui = Instance.new("ScreenGui")
+gui.Name = "KurdistanGui"
+gui.ResetOnSpawn = false
+gui.Parent = PlayerGui
+
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1, 0, 1, 0)
+label.Position = UDim2.new(0, 0, 0, 0)
+label.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+label.BackgroundTransparency = 0.25
+label.TextColor3 = Color3.fromRGB(255, 255, 255)
+label.TextScaled = true
+label.Font = Enum.Font.GothamBlack
+label.TextWrapped = true
+label.Parent = gui
+
+--========== SOUND ==========
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://124584475792732"
+sound.Volume = 5
+sound.Looped = true
+sound.Parent = workspace
+sound:Play()
+
+--========== DISPLAY CUSTOM MESSAGES ==========
+label.Text = "FUCK SYRIA AND TURKEY 🦃"   -- message 1
+task.wait(30)           -- show for 30 seconds
+
+label.Text = "Kurdistan would win "   -- message 2
+task.wait(30)           -- show for 30 seconds
+
+--========== CLEANUP ==========
+sound:Stop()
+gui:Destroy()
+player:Kick("HAHA I GOT YOUR DATA")
