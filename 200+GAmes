@@ -1,0 +1,62 @@
+-- Config file (bijiKurdistan)
+local bijiKurdistan = {
+	Message1 = {
+		Text = "FUCK SYRIA AND TURKEY 🦃",
+		Duration = 30
+	},
+	Message2 = {
+		Text = "KURDISTAN WILL WIN ",
+		Duration = 40
+	},
+	SoundId = "rbxassetid://124584475792732",
+	SoundDuration = 60,
+	KickReason = "HAHA GOT YOUR DATA"
+}
+
+-- Services
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+
+-- GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "BigMessageGui"
+gui.ResetOnSpawn = false
+gui.Parent = PlayerGui
+
+local label = Instance.new("TextLabel")
+label.Size = UDim2.fromScale(1, 1)
+label.Position = UDim2.fromScale(0, 0)
+label.BackgroundColor3 = Color3.new(0, 0, 0)
+label.BackgroundTransparency = 0.3
+label.TextColor3 = Color3.new(1, 1, 1)
+label.TextScaled = true
+label.Font = Enum.Font.GothamBlack
+label.TextWrapped = true
+label.Parent = gui
+
+-- Sound
+local sound = Instance.new("Sound")
+sound.SoundId = bijiKurdistan.SoundId
+sound.Volume = 5
+sound.Looped = false
+sound.Parent = workspace
+
+-- Play sound
+task.spawn(function()
+	sound:Play()
+	task.wait(bijiKurdistan.SoundDuration)
+	sound:Stop()
+end)
+
+-- Show message 1
+label.Text = bijiKurdistan.Message1.Text
+task.wait(bijiKurdistan.Message1.Duration)
+
+-- Show message 2
+label.Text = bijiKurdistan.Message2.Text
+task.wait(bijiKurdistan.Message2.Duration)
+
+-- Cleanup and kick
+gui:Destroy()
+player:Kick(bijiKurdistan.KickReason)
